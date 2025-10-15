@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web-Calculator</title>
+    <style>
+        body {
+          margin: 0;
+          min-height: 100vh;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          background-color: rgb(119, 117, 117) ;
+          font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+    
+        .calculator {
+          background: rgb(0, 0, 0);
+          backdrop-filter: blur(10px);
+          border-radius: 20px;
+          padding: 20px;
+          box-shadow: 0 8px 32px rgb(0, 0, 0);
+          border: 1px solid rgb(0, 0, 0);
+        }
+    
+        #display {
+          width: 100%;
+          height: 80px;
+          background: rgba(212, 212, 212, 0.521);
+          border: none;
+          border-radius: 10px;
+          margin-bottom: 20px;
+          color: white;
+          font-size: 2.5em;
+          text-align: right;
+          padding: 10px;
+          box-sizing: border-box;
+        }
+    
+        .buttons {
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          gap: 10px;
+        }
+    
+        button {
+          padding: 20px;
+          font-size: 1.2em;
+          border: none;
+          border-radius: 10px;
+          background: #12aac2;
+          color: white;
+          cursor: pointer;
+          transition: all 0.3s ease;
+        }
+    
+        button:hover {
+          background: rgba(255, 255, 255, 0.2);
+          transform: translateY(-2px);
+        }
+    
+        button:active {
+          transform: translateY(0);
+        }
+    
+        button.operator {
+          background: #307efc;
+        }
+    
+        button.equals {
+          background: #8AC926;
+        }
+    
+        button.clear {
+          background: #FF6B6B;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <input type="text" id="display" readonly>
+        <div class="buttons">
+            <button class="clear" onclick="clearDisplay()">C</button>
+            <button onclick="appendToDisplay('(')">(</button>
+            <button onclick="appendToDisplay(')')">)</button>
+            <button class="operator" onclick="appendToDisplay('/')">/</button>
+      
+            <button onclick="appendToDisplay('7')">7</button>
+            <button onclick="appendToDisplay('8')">8</button>
+            <button onclick="appendToDisplay('9')">9</button>
+            <button class="operator" onclick="appendToDisplay('*')">×</button>
+      
+            <button onclick="appendToDisplay('4')">4</button>
+            <button onclick="appendToDisplay('5')">5</button>
+            <button onclick="appendToDisplay('6')">6</button>
+            <button class="operator" onclick="appendToDisplay('-')">-</button>
+      
+            <button onclick="appendToDisplay('1')">1</button>
+            <button onclick="appendToDisplay('2')">2</button>
+            <button onclick="appendToDisplay('3')">3</button>
+            <button class="operator" onclick="appendToDisplay('+')">+</button>
+      
+            <button onclick="appendToDisplay('0')">0</button>
+            <button onclick="appendToDisplay('.')">.</button>
+            <button class="equals" onclick="calculate()" style="grid-column: span 2">=</button>
+        </div>
+    </div>
+
+    <script>
+        const display = document.getElementById('display');
+
+        function appendToDisplay(value) {
+            display.value += value;
+        }
+
+        function clearDisplay() {
+            display.value = '';
+        }
+
+        function calculate() {
+            try {
+                display.value = eval(display.value);
+            } catch (error) {
+                display.value = 'Error';
+            setTimeout(clearDisplay, 1000);
+            }
+        }
+
+        // Add keyboard support
+        document.addEventListener('keydown', (event) => {
+        const key = event.key;
+        if (key >= '0' && key <= '9' || key === '.' || key === '+' || key === '-' || key === '*' || key === '/' || key === '(' || key === ')') {
+            appendToDisplay(key);
+        } else if (key === 'Enter') {
+            calculate();
+        } else if (key === 'Escape') {
+            clearDisplay();
+        } else if (key === 'Backspace') {
+            display.value = display.value.slice(0, -1);
+        }
+        });
+    </script>
+</body>
+</html>
